@@ -27,3 +27,12 @@ Only build from source when no suitable prebuilt binary exists.
   - When a native macOS build is required, use the host toolchain (Xcode Command Line Tools). If a language toolchain is missing, install it as a versioned binary per the rules above, not via Homebrew.
 - Keep source and build files in a temporary directory, not in `$HOME` or the dotfiles repository.
 - Install the result into `~/.local/share/<name>-<version>/` (e.g. `./configure --prefix="$HOME/.local/share/<name>-<version>"`) and symlink it into `~/.local/bin/` as above.
+
+## Git commits
+
+- **Make small, focused commits.** Group related changes into one commit per logical change, and split unrelated changes into separate commits, even when they touch the same file (stage only the relevant files, or apply a partial patch with `git apply --cached` when one file holds unrelated changes). Do not bundle everything into one large commit.
+- **Use the Conventional Commits format:** `<type>(<optional scope>): <summary>`
+  - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+  - Write the summary in the imperative mood and lowercase, with no trailing period, and keep it to about 72 characters or fewer.
+  - Mark breaking changes with `!` after the type/scope (e.g. `feat(api)!: ...`) and a `BREAKING CHANGE:` footer.
+  - Add a body when the reason for the change isn't obvious from the summary.
