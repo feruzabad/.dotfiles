@@ -1,6 +1,6 @@
 ---
 name: consult
-description: Delegate to or consult other LLMs available in opencode. Use proactively to save Claude tokens by offloading large reading jobs (big logs, files, docs, codebase searches) and bulk writing (boilerplate, tests, repetitive edits) to cheaper models, and for second opinions on important decisions or bugs stuck after two attempts; also when the user types /consult. Picks a weaker or stronger model by task difficulty and treats answers as advice to verify, never as truth.
+description: Delegate to or consult other LLMs available in opencode, including local Ollama models for confidential material. Use proactively to save Claude tokens by offloading large reading jobs (big logs, files, docs, codebase searches) and bulk writing (boilerplate, tests, repetitive edits) to cheaper models, and for second opinions on important decisions or bugs stuck after two attempts; also when the user types /consult. Picks a weaker or stronger model by task difficulty and treats answers as advice to verify, never as truth.
 ---
 
 # Delegate to and consult external models via opencode
@@ -26,7 +26,7 @@ The delegate writes, and you read only the diff. Use it for large, well-specifie
 Reserve this for when a mistake would be expensive: a design or architecture decision that is hard to reverse, a risky change, a bug that survived two serious attempts, or reviewing an important plan. Don't use it out of habit or for decisions you are confident about.
 
 ### Never
-Never use it for questions you can answer from what is already in context, when the user asked you not to, or with secrets in the prompt or attached files (`.env` contents, API keys, tokens, 1Password values). Prompts go to third-party providers.
+Never use it for questions you can answer from what is already in context, when the user asked you not to, or with secrets in the prompt or attached files (`.env` contents, API keys, tokens, 1Password values). Prompts to remote models go to third-party providers. For confidential material that is not a secret, use a local model (see below).
 
 ## 1. Pick a model
 
@@ -47,9 +47,18 @@ Rules:
 - If the model lists variants, pass `--variant high` (or `max`/`xhigh`) for frontier questions and `low` or none for light work.
 - On failure (rate limit, model removed, timeout), retry once with the next model in the same tier. If a whole provider fails with an auth or subscription error, run `models.sh --refresh`.
 
+### Local models (Ollama)
+
+`models.sh` also lists, under "local", the Ollama models stored on this machine that support tool calling. Ollama cloud models are never used. Local models are free and the data never leaves the machine, but they are slow (about a minute for a small reading task) and limited to the context Ollama serves (the `context` column, typically 32k). opencode's own prompt takes about 10k of that, so the material must fit in what remains.
+
+- **Prefer local** when the material is confidential (proprietary code, personal or customer data) and should not reach third-party providers. Also prefer it when no remote provider works, or for small-to-medium offload jobs where latency doesn't matter (run those with `run_in_background`).
+- **Avoid local** when the material exceeds the context (use a remote model, or split the job), for frontier-level reasoning, or when the user is waiting on the result.
+- **Tiers**: under about 15B parameters counts as light, and roughly 25–35B as standard. Prefer `coder` variants for code tasks.
+- **Memory**: prefer models with `loaded` = `yes`. Loading another ~20 GB model can stall behind or evict models the user is running. Make one local call at a time.
+
 ## 2. Call it
 
-Use `~/.claude/skills/consult/ask.sh`. It forwards all arguments to `opencode run`, prints only the model's answer text (no tool-call noise or color codes), and adds a one-line footer on stderr with the tools used, tokens and cost. Run it from the project directory or pass `--dir`. For long jobs, use `run_in_background`.
+Use `~/.claude/skills/consult/ask.sh`. It forwards all arguments to `opencode run`, prints only the model's answer text (no tool-call noise or color codes), and adds a one-line footer on stderr with the tools used, tokens and cost. For `ollama/*` models, it registers the current local models with opencode automatically. Run it from the project directory or pass `--dir`. For long jobs, use `run_in_background`.
 
 **Read-only (modes A and C)** uses the `plan` agent, which can read the repo but not edit it:
 
