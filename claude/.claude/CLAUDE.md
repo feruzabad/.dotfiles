@@ -30,9 +30,9 @@ Only build from source when no suitable prebuilt binary exists.
 
 ## External consultants (opencode)
 
-- **Use the `consult` skill to get second opinions from, or delegate work to, other models available in opencode.** Do this proactively when it is worth the time: before non-trivial design decisions or risky changes, when stuck on a bug, to review a plan or diff, or to offload simple, well-specified bulk work.
-- **Choose the model tier by task difficulty:** weaker, cheaper models for easy work and stronger models for hard reasoning. The skill describes how.
-- **Never accept a consultant's answer as truth.** Verify its claims and review its edits before relying on them, and tell the user what you adopted or rejected.
+- **Use the `consult` skill to delegate work to, or get second opinions from, other models available in opencode.** Use it proactively to save Claude tokens: offload large reading jobs (logs, big files, codebase searches) and bulk writing (boilerplate, tests, repetitive edits) to cheaper models. Reserve second opinions for important decisions and stubborn bugs, since they cost extra tokens.
+- **Choose the cheapest model that can do the job:** weaker models for easy work and stronger models for hard reasoning. The skill describes how.
+- **Never accept a delegate's answer as truth.** Verify it in proportion to the risk, from spot checks for search results to full checks for decisions, and tell the user what you adopted or rejected.
 
 ## Git commits
 
