@@ -63,3 +63,13 @@ jq -rs '
     (.release_date // "")
   ] | @tsv)' <<<"$models" |
   column -t -s $'\t'
+
+local_models=$("${0%/*}/ollama-models.sh")
+if [[ -n $local_models ]]; then
+  echo
+  echo "local (Ollama; free, private, slower; context is what Ollama serves, not the model maximum):"
+  jq -rs '
+    (["id", "params", "size_GB", "context", "loaded"] | @tsv),
+    (sort_by(.size_gb) | .[] | [.id, .params, .size_gb, .context, (if .loaded then "yes" else "no" end)] | @tsv)' <<<"$local_models" |
+    column -t -s $'\t'
+fi

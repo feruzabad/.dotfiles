@@ -6,7 +6,24 @@
 set -euo pipefail
 
 log=$(mktemp)
-trap 'rm -f "$log"' EXIT
+config=$(mktemp)
+trap 'rm -f "$log" "$config"' EXIT
+
+# Local Ollama models are not in opencode's config, so register the current ones on the fly.
+# The context limit lets opencode compact before Ollama silently truncates the prompt.
+if [[ " $* " == *" ollama/"* || " $* " == *"=ollama/"* ]]; then
+  "${0%/*}/ollama-models.sh" | jq -s '{
+    "$schema": "https://opencode.ai/config.json",
+    provider: {ollama: {
+      npm: "@ai-sdk/openai-compatible",
+      name: "Ollama (local)",
+      options: {baseURL: "\(env.OLLAMA_HOST // "http://localhost:11434" | if startswith("http") then . else "http://" + . end | rtrimstr("/"))/v1"},
+      models: (map({key: (.id | ltrimstr("ollama/")), value: {
+        name: "\(.id) (local)", tool_call: true, limit: {context: .context, output: 8192}
+      }}) | from_entries)
+    }}}' >"$config"
+  export OPENCODE_CONFIG="$config"
+fi
 
 status=0
 opencode run --format json "$@" >"$log" 2>/dev/null || status=$?
