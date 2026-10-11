@@ -28,6 +28,12 @@ Only build from source when no suitable prebuilt binary exists.
 - Keep source and build files in a temporary directory, not in `$HOME` or the dotfiles repository.
 - Install the result into `~/.local/share/<name>-<version>/` (e.g. `./configure --prefix="$HOME/.local/share/<name>-<version>"`) and symlink it into `~/.local/bin/` as above.
 
+## External consultants (opencode)
+
+- **Use the `consult` skill to get second opinions from, or delegate work to, other models available in opencode.** Do this proactively when it is worth the time: before non-trivial design decisions or risky changes, when stuck on a bug, to review a plan or diff, or to offload simple, well-specified bulk work.
+- **Choose the model tier by task difficulty:** weaker, cheaper models for easy work and stronger models for hard reasoning. The skill describes how.
+- **Never accept a consultant's answer as truth.** Verify its claims and review its edits before relying on them, and tell the user what you adopted or rejected.
+
 ## Git commits
 
 - **Make small, focused commits.** Group related changes into one commit per logical change, and split unrelated changes into separate commits, even when they touch the same file (stage only the relevant files, or apply a partial patch with `git apply --cached` when one file holds unrelated changes). Do not bundle everything into one large commit.
