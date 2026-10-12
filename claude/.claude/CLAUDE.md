@@ -16,6 +16,9 @@
   - Install it into a versioned directory: `~/.local/share/<name>-<version>/`
   - Symlink the executable into `~/.local/bin/`, for example `ln -s ~/.local/share/<name>-<version>/<name> ~/.local/bin/<name>`.
   - To upgrade, install the new version alongside the old one and repoint the symlink.
+- **Global npm packages are an exception:** install them with `npm install -g <pkg>`. `~/.npmrc` (tracked in the dotfiles `npm` stow package) sets `prefix=${HOME}/.local`, so packages go to `~/.local/lib/node_modules/` and commands land directly in `~/.local/bin/`. Do not create symlinks for them manually, and do not install into the versioned Node directory.
+  - Packages with native modules (e.g. `keytar`, `node-pty`) need their install scripts allowed explicitly: `npm install -g --allow-scripts=<pkg1>,<pkg2> <package>`.
+  - After a major Node upgrade, run `npm rebuild -g` so native modules match the new Node ABI.
 
 ## macOS: compiling from source
 
