@@ -18,6 +18,13 @@
 - **Use local Ollama models for confidential material**, never Ollama cloud models.
 - **Never accept a delegate's answer as truth.** Verify it in proportion to the risk and tell the user what you adopted or rejected.
 
+## GitHub (`gh`)
+
+- **Use the `gh` CLI for every GitHub operation** (repositories, pull requests, issues, releases, API calls), not raw `curl` or the web UI. Check `gh auth status` first if a command fails.
+- **Creating a repository:** ask whether it should be private or public (recommend private), give it a short one-line description, and create it from the local repository so `origin` is set and the branch is pushed:
+  `gh repo create <owner>/<name> --private --description "<one line>" --source . --remote origin --push`
+- **Push only when the user asks.** Never force-push without the user's explicit confirmation for that push.
+
 ## Git commits
 
 - **Make small, focused commits.** Group related changes into one commit per logical change, and split unrelated changes into separate commits, even when they touch the same file (stage only the relevant files, or apply a partial patch with `git apply --cached` when one file holds unrelated changes). Do not bundle everything into one large commit.
