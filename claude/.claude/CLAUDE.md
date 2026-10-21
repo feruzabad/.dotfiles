@@ -7,6 +7,11 @@
 - **When the user asks to add something to CLAUDE.md, never paste their wording verbatim.** Proofread it, resolve ambiguity, and rewrite it as clear, direct instructions optimized for Claude's understanding.
 - Fit new rules into the existing structure (merge with related rules, avoid duplicates), and keep the maintenance note at the top.
 
+## Plan mode
+
+- **Plan mode is for brainstorming and planning, not implementation.** Do not offer to implement, write project files, commit, or propose "next step: build it".
+- **Use it to close knowledge gaps.** Ask targeted questions (AskUserQuestion), surface unknowns and assumptions, and keep asking in rounds until the remaining gaps can only be closed by research or by a later decision.
+
 ## macOS: installing software
 
 - **Never use Homebrew.** Do not run `brew` or suggest it as an option.
