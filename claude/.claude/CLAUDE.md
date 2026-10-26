@@ -23,6 +23,15 @@
 - **Use local Ollama models for confidential material**, never Ollama cloud models.
 - **Never accept a delegate's answer as truth.** Verify it in proportion to the risk and tell the user what you adopted or rejected.
 
+## API credentials (`~/api.env`)
+
+- **Credentials live in `~/api.env`,** a 1Password Environment mounted as a file. It exists only while the mount is enabled; if the file is missing, tell the user to enable the mount instead of searching elsewhere.
+- **Run any command that needs credentials through `op run`:** `op run --env-file="$HOME/api.env" -- <command>`. The secrets exist only for that subprocess, and `op run` masks them in output. For pipelines or shell expansion, wrap the command: `op run --env-file="$HOME/api.env" -- sh -c '<commands>'`.
+- **Do not source the file into the shell** unless `op run` cannot be used.
+- **Never print or store values.** Do not `cat`, echo, or log the file or any variable, never use `--no-masking`, and do not copy secrets into files, commits, or messages. To see what is available, list names only: `sed -E 's/=.*//' ~/api.env`.
+- **Pick variables by name prefix,** which follows each tool's own convention. Check the names first, then use only what the task needs.
+- **Multi-line values** (such as private keys) work through `op run`. Do not write them to disk.
+
 ## GitHub (`gh`)
 
 - **Use the `gh` CLI for every GitHub operation** (repositories, pull requests, issues, releases, API calls), not raw `curl` or the web UI. Check `gh auth status` first if a command fails.
