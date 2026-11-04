@@ -17,12 +17,6 @@
 - **Never use Homebrew.** Do not run `brew` or suggest it as an option.
 - **Before installing, upgrading, or compiling any software, load the `macos-install` skill** and follow it (Docker-first, versioned installs, source confirmation, install log).
 
-## External consultants (opencode)
-
-- **Use the `consult` skill proactively** to offload large reading jobs and bulk writing to cheaper models; reserve second opinions for important decisions and stubborn bugs.
-- **Use local Ollama models for confidential material**, never Ollama cloud models.
-- **Never accept a delegate's answer as truth.** Verify it in proportion to the risk and tell the user what you adopted or rejected.
-
 ## API credentials (`~/api.env`)
 
 - **Credentials live in `~/api.env`,** a 1Password Environment mounted as a file. It exists only while the mount is enabled; if the file is missing, tell the user to enable the mount instead of searching elsewhere.
