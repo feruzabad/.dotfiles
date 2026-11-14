@@ -17,6 +17,11 @@
 - **Never use Homebrew.** Do not run `brew` or suggest it as an option.
 - **Before installing, upgrading, or compiling any software, load the `macos-install` skill** and follow it (Docker-first, versioned installs, source confirmation, install log).
 
+## Python
+
+- **Never modify or `pip install` into the system Python** (`/usr/bin/python3`, owned by Apple's Command Line Tools).
+- **Use `uv`** (`~/.local/bin/uv`): `uv python install <version>` for interpreters, `uv venv` / `uv run` for per-project environments.
+
 ## API credentials (`~/api.env`)
 
 - **Credentials live in `~/api.env`,** a 1Password Environment mounted as a file. It exists only while the mount is enabled; if the file is missing, tell the user to enable the mount instead of searching elsewhere.
